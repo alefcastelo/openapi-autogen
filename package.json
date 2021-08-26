@@ -21,7 +21,7 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "dev": "ts-node -r tsconfig-paths/register src/examples/app.ts"
+    "test": "jest --config=./test/jest.config.ts"
   },
   "dependencies": {
     "lodash": "^4.17.21"

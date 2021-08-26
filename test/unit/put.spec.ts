@@ -1,12 +1,10 @@
-import { OAGet } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OAPut } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
-describe('@OAGet', () => {
-
+describe('@OAPut', () => {
   class Action {
-
-    @OAGet('/subscriber/{uuid}')
+    @OAPut('/subscriber/{uuid}')
     handle(): void {
       return
     }
@@ -18,6 +16,6 @@ describe('@OAGet', () => {
     const definitions = getAllDefinitions()
 
     expect(definitions.path[key].path).toEqual('/subscriber/{uuid}')
-    expect(definitions.path[key].method).toEqual('get')
+    expect(definitions.path[key].method).toEqual('put')
   })
 })

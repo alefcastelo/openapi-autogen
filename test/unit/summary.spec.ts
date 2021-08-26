@@ -1,11 +1,9 @@
-import { OASummary } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OASummary } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OASummary', () => {
-
   class Action {
-
     @OASummary('User Create')
     handle(): void {
       return

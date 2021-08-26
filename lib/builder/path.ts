@@ -1,4 +1,4 @@
-import { Definitions } from "../definitions";
+import { Definitions } from '../definitions'
 
 export interface Content {
   [key: string]: {

@@ -1,11 +1,9 @@
-import { OAOperationId } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OAOperationId } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OAOperationId', () => {
-
   class Action {
-
     @OAOperationId('create')
     handle(): void {
       return

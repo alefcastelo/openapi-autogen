@@ -1,11 +1,9 @@
-import { OAPath } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OAPath } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OAPath', () => {
-
   class Action {
-
     @OAPath('/subscriber', 'post')
     handle(): void {
       return

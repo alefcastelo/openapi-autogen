@@ -1,11 +1,9 @@
-import { OADescription } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OADescription } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OADescription', () => {
-
   class Action {
-
     @OADescription('User Create')
     handle(): void {
       return

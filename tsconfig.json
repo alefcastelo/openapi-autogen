@@ -4,19 +4,18 @@
     "moduleResolution": "node",
     "target": "es2018",
     "lib": ["es2018"],
-    "outDir": "build/node",
-    "rootDir": "./src",
+    "outDir": "build",
+    "baseUrl": "./lib",
+    "rootDir": "./lib",
     "strict": true,
     "sourceMap": true,
-    "inlineSources": true,
-    "removeComments": false,
+    "removeComments": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true
+    "experimentalDecorators": true
   },
   "include": [
-    "src/**/*.ts"
+    "lib/**/*.ts"
   ],
   "exclude": ["build", "node_modules", "sample", "**/*.spec.ts", "test/**"]
 }

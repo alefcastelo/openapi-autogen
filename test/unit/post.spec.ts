@@ -1,11 +1,9 @@
-import { OAPost } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OAPost } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OAPost', () => {
-
   class Action {
-
     @OAPost('/subscriber')
     handle(): void {
       return

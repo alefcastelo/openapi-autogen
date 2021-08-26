@@ -1,11 +1,9 @@
-import { OADelete } from '../src'
-import { keyGenerator } from '../src/key'
-import { getAllDefinitions } from '../src/definitions'
+import { OADelete } from '../../lib'
+import { keyGenerator } from '../../lib/key'
+import { getAllDefinitions } from '../../lib/definitions'
 
 describe('@OADelete', () => {
-
   class Action {
-
     @OADelete('/subscriber/{uuid}')
     handle(): void {
       return

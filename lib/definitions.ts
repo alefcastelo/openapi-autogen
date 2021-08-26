@@ -1,59 +1,56 @@
-type Path = { path: string, method: string }
+type Path = { path: string; method: string }
 type Tags = { tags: string[] }
 type Summary = { summary: string }
 type Description = { description: string }
 type OperationId = { operationId: string }
-type Response = { status: number, description: string }
+type Response = { status: number; description: string }
 type RequestJsonBody = { schema: string }
 type RequestXmlBody = { schema: string }
 type ResponseJsonBody = { schema: string }
 type ResponseXmlBody = { schema: string }
 type Property = {
-  name: string,
-  required: boolean,
-  boolean: boolean,
-  type: string,
-  format: string,
-  items: string,
-  enum: string[],
-  default: string,
+  name: string
+  required: boolean
+  boolean: boolean
+  type: string
+  format: string
+  items: string
+  enum: string[]
+  default: string
   description: string
 }
 
 export interface Definitions {
   path: {
     [key: string]: Path
-  },
+  }
   tags: {
     [key: string]: Tags
-  },
+  }
   summary: {
     [key: string]: Summary
-  },
+  }
   description: {
     [key: string]: Description
-  },
+  }
   operationId: {
     [key: string]: OperationId
-  },
+  }
   requestJsonBody: {
     [key: string]: RequestJsonBody
-  },
+  }
   requestXmlBody: {
     [key: string]: RequestXmlBody
-  },
+  }
   responseJsonBody: {
     [key: string]: ResponseJsonBody
-  },
+  }
   responseXmlBody: {
     [key: string]: ResponseXmlBody
-  },
-  parameter: {
-    [key: string]: {}
-  },
+  }
   response: {
     [key: string]: Response
-  },
+  }
   property: {
     [key: string]: Property[]
   }
@@ -69,9 +66,8 @@ const definitions: Definitions = {
   requestXmlBody: {},
   responseJsonBody: {},
   responseXmlBody: {},
-  parameter: {},
   response: {},
-  property: {},
+  property: {}
 }
 
 export const getAllDefinitions = (): Definitions => {
