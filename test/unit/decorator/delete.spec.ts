@@ -1,6 +1,6 @@
-import { OADelete } from '../../lib'
-import { keyGenerator } from '../../lib/key'
-import { getAllDefinitions } from '../../lib/definitions'
+import { OADelete } from '../../../lib'
+import { keyGenerator } from '../../../lib/key'
+import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OADelete', () => {
   class Action {
@@ -12,7 +12,7 @@ describe('@OADelete', () => {
 
   const key = keyGenerator(Action.name, 'handle')
 
-  it('Defining Path', () => {
+  it('Defining Delete', () => {
     const definitions = getAllDefinitions()
 
     expect(definitions.path[key].path).toEqual('/subscriber/{uuid}')

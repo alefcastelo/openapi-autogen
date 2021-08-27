@@ -1,6 +1,6 @@
-import { OAPath } from '../../lib'
-import { keyGenerator } from '../../lib/key'
-import { getAllDefinitions } from '../../lib/definitions'
+import { OAPath } from '../../../lib'
+import { keyGenerator } from '../../../lib/key'
+import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OAPath', () => {
   class Action {

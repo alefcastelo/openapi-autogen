@@ -13,7 +13,7 @@ const config: InitialOptionsTsJest = {
     '^.+\\.(t|j)s$': 'ts-jest'
   },
   testRegex: '.(spec|e2e).ts$',
-  verbose: true
+  verbose: false
 }
 
 export default config

@@ -1,6 +1,6 @@
-import { OAGet } from '../../lib'
-import { keyGenerator } from '../../lib/key'
-import { getAllDefinitions } from '../../lib/definitions'
+import { OAGet } from '../../../lib'
+import { keyGenerator } from '../../../lib/key'
+import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OAGet', () => {
   class Action {
@@ -12,7 +12,7 @@ describe('@OAGet', () => {
 
   const key = keyGenerator(Action.name, 'handle')
 
-  it('Defining Path', () => {
+  it('Defining Get', () => {
     const definitions = getAllDefinitions()
 
     expect(definitions.path[key].path).toEqual('/subscriber/{uuid}')

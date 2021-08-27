@@ -4,10 +4,8 @@ type Summary = { summary: string }
 type Description = { description: string }
 type OperationId = { operationId: string }
 type Response = { status: number; description: string }
-type RequestJsonBody = { schema: string }
-type RequestXmlBody = { schema: string }
-type ResponseJsonBody = { schema: string }
-type ResponseXmlBody = { schema: string }
+type RequestBody = { schema: string, contentType: string }
+type ResponseBody = { statusCode: number, description?: string, schema?: string, contentType?: string }
 type Property = {
   name: string
   required: boolean
@@ -36,17 +34,11 @@ export interface Definitions {
   operationId: {
     [key: string]: OperationId
   }
-  requestJsonBody: {
-    [key: string]: RequestJsonBody
+  requestBody: {
+    [key: string]: RequestBody[]
   }
-  requestXmlBody: {
-    [key: string]: RequestXmlBody
-  }
-  responseJsonBody: {
-    [key: string]: ResponseJsonBody
-  }
-  responseXmlBody: {
-    [key: string]: ResponseXmlBody
+  responseBody: {
+    [key: string]: ResponseBody[]
   }
   response: {
     [key: string]: Response
@@ -62,10 +54,8 @@ const definitions: Definitions = {
   summary: {},
   description: {},
   operationId: {},
-  requestJsonBody: {},
-  requestXmlBody: {},
-  responseJsonBody: {},
-  responseXmlBody: {},
+  requestBody: {},
+  responseBody: {},
   response: {},
   property: {}
 }
@@ -92,4 +82,20 @@ export const addOperationId = (key: string, operationId: string): void => {
 
 export const addPath = (key: string, path: string, method: string): void => {
   definitions.path[key] = { path, method }
+}
+
+export const addRequestBody = (key: string, schema: string, contentType: string): void => {
+  if (typeof definitions.requestBody[key] === 'undefined') {
+    definitions.requestBody[key] = []
+  }
+
+  definitions.requestBody[key].push({ schema, contentType })
+}
+
+export const addResponseBody = (key: string, statusCode: number, description: string, schema?: string, contentType?: string): void => {
+  if (typeof definitions.responseBody[key] === 'undefined') {
+    definitions.responseBody[key] = []
+  }
+
+  definitions.responseBody[key].push({ statusCode, description, schema, contentType })
 }

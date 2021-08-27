@@ -1,6 +1,6 @@
-import { OAPost } from '../../lib'
-import { keyGenerator } from '../../lib/key'
-import { getAllDefinitions } from '../../lib/definitions'
+import { OAPost } from '../../../lib'
+import { keyGenerator } from '../../../lib/key'
+import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OAPost', () => {
   class Action {
@@ -10,7 +10,7 @@ describe('@OAPost', () => {
     }
   }
 
-  it('Defining Path', () => {
+  it('Defining Post', () => {
     const key = keyGenerator(Action.name, 'handle')
     const definitions = getAllDefinitions()
 

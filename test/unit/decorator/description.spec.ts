@@ -1,6 +1,6 @@
-import { OADescription } from '../../lib'
-import { keyGenerator } from '../../lib/key'
-import { getAllDefinitions } from '../../lib/definitions'
+import { OADescription } from '../../../lib'
+import { keyGenerator } from '../../../lib/key'
+import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OADescription', () => {
   class Action {
@@ -12,7 +12,7 @@ describe('@OADescription', () => {
 
   const key = keyGenerator(Action.name, 'handle')
 
-  it('Defining OperationId', () => {
+  it('Defining Description', () => {
     expect(getAllDefinitions().description[key].description).toEqual('User Create')
   })
 })

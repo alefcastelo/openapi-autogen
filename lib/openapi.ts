@@ -1,4 +1,4 @@
-import { Path, PathBuilder } from './builder/path'
+import { Path, PathBuilder } from './builder/path.builder'
 import { Definitions, getAllDefinitions } from './definitions'
 
 export interface Tag {
@@ -35,7 +35,7 @@ interface OpenApiDocument {
   tags?: Tag[]
   servers?: string[]
   externalDocs?: ExternalDocs
-  paths?: Tag[]
+  paths?: Path
 }
 
 export class OpenApi {
@@ -46,11 +46,16 @@ export class OpenApi {
   }
 
   build(): OpenApiDocument {
+    const path = this.buildPaths()
+    if (Object.keys(path).length > 0) {
+      this.oa.paths = path
+    }
+
     return this.oa
   }
 
-  buildPaths(definitions: Definitions): Path[] {
-    const builder = new PathBuilder(definitions)
+  buildPaths(): Path {
+    const builder = new PathBuilder(this.definitions)
 
     return builder.build()
   }
