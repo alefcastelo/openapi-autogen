@@ -51,7 +51,9 @@ describe('PathBuilder', () => {
           "requestBody": {
             "content": {
               "application/json": {
-                "schema": "#/components/SubscriberCreateInput"
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriberCreateInput"
+                }
               }
             }
           }
@@ -72,11 +74,22 @@ describe('PathBuilder', () => {
           "description": "Update the Subscriber",
           "summary": "Update the Subscriber",
           "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriberUpdateInput"
+                }
+              }
+            }
+          },
+          "responses": {
             "200": {
               "description": "Subscriber Full Output",
               "content": {
                 "application/json": {
-                  "schema": "#/components/SubscriberFullOutput"
+                  "schema": {
+                    "$ref": "#/components/schemas/SubscriberFullOutput"
+                  }
                 }
               }
             },

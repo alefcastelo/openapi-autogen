@@ -1,4 +1,5 @@
-import { Path, PathBuilder } from './builder/path.builder'
+import { Paths, PathBuilder } from './builder/path.builder'
+import { SchemaBuilder, Schemas } from './builder/schema.builder'
 import { Definitions, getAllDefinitions } from './definitions'
 
 export interface Tag {
@@ -29,13 +30,20 @@ interface ExternalDocs {
   url?: string
 }
 
+interface Server {
+  url: string
+}
+
 interface OpenApiDocument {
   openapi?: string
   info?: Info
   tags?: Tag[]
-  servers?: string[]
+  servers?: Server[]
   externalDocs?: ExternalDocs
-  paths?: Path
+  paths?: Paths
+  components?: {
+    schemas?: Schemas
+  }
 }
 
 export class OpenApi {
@@ -46,16 +54,28 @@ export class OpenApi {
   }
 
   build(): OpenApiDocument {
-    const path = this.buildPaths()
-    if (Object.keys(path).length > 0) {
-      this.oa.paths = path
+    const paths = this.buildPaths()
+    if (Object.keys(paths).length > 0) {
+      this.oa.paths = paths
+    }
+
+    this.oa.components = {}
+    const schemas = this.buildSchemas()
+    if (Object.keys(schemas).length > 0) {
+      this.oa.components.schemas = schemas
     }
 
     return this.oa
   }
 
-  buildPaths(): Path {
+  buildPaths(): Paths {
     const builder = new PathBuilder(this.definitions)
+
+    return builder.build()
+  }
+
+  buildSchemas(): Schemas {
+    const builder = new SchemaBuilder(this.definitions)
 
     return builder.build()
   }
@@ -105,7 +125,7 @@ export class OpenApi {
       this.oa.servers = []
     }
 
-    this.oa.servers = [url, ...this.oa.servers]
+    this.oa.servers = [{ url: url }, ...this.oa.servers]
 
     return this
   }

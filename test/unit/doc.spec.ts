@@ -1,14 +1,62 @@
-import { OADescription, OAGet, OAOperationId, OAPost, OAPut, OARequestBody, OAResponseBody, OAResponseJsonBody, OASummary, OATags, OpenApi } from '../../lib'
+import { OADescription, OAGet, OAOperationId, OAPost, OAProperty, OAPut, OARequestBody, OAResponseBody, OAResponseJsonBody, OASummary, OATags, OpenApi } from '../../lib'
 
 describe('OpenApi', () => {
   it('Defining Doc', () => {
+
+    class AddressCreateInput {
+      @OAProperty()
+      public street: string
+
+      @OAProperty()
+      public number: number
+    }
+
+    class SubscriberCreateInput {
+      @OAProperty()
+      public firstName: string
+
+      @OAProperty()
+      public lastName: string
+
+      @OAProperty()
+      public email: string
+
+      @OAProperty()
+      public address: AddressCreateInput
+    }
+
+    class SubscriberUpdateInput {
+      @OAProperty()
+      public firstName: string
+
+      @OAProperty()
+      public lastName: string
+
+      @OAProperty()
+      public email: string
+
+      @OAProperty()
+      public address: AddressCreateInput
+    }
+
+    class SubscriberFullOutput {
+      @OAProperty()
+      public firstName: string
+
+      @OAProperty()
+      public lastName: string
+
+      @OAProperty()
+      public email: string
+    }
 
     class SubscriberControler {
 
       @OAPost('/subscriber')
       @OATags(['subscriber'])
       @OADescription('Create a new Subscriber')
-      @OARequestBody('SubscriberCreateInput')
+      @OARequestBody(SubscriberCreateInput)
+      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
       create(): void {
         return
       }
@@ -16,6 +64,7 @@ describe('OpenApi', () => {
       @OAGet('/subscriber/{uuid}')
       @OATags(['subscriber'])
       @OADescription('Retrieve the Subscriber')
+      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
       retrieve(): void {
         return
       }
@@ -25,8 +74,8 @@ describe('OpenApi', () => {
       @OADescription('Update the Subscriber')
       @OASummary('Update the Subscriber')
       @OAOperationId('subscriberUpdate')
-      @OARequestBody('SubscriberUpdateInput')
-      @OAResponseJsonBody(200, 'Subscriber Full Output', 'SubscriberFullOutput')
+      @OARequestBody(SubscriberUpdateInput)
+      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
       @OAResponseBody(404, 'Subscriber Not Found')
       @OAResponseBody(500, 'Internal Server Error')
       update(): void {
@@ -47,7 +96,7 @@ describe('OpenApi', () => {
 
     const doc = openApi.build()
 
-    expect(doc).toEqual({
+    expect(doc).toEqual( {
       "openapi": "3.0.2",
       "info": {
         "title": "Eclesi API",
@@ -66,7 +115,9 @@ describe('OpenApi', () => {
         }
       ],
       "servers": [
-        "http://localhost:3000"
+        {
+          "url": "http://localhost:3000"
+        }
       ],
       "paths": {
         "/subscriber": {
@@ -78,7 +129,21 @@ describe('OpenApi', () => {
             "requestBody": {
               "content": {
                 "application/json": {
-                  "schema": "#/components/SubscriberCreateInput"
+                  "schema": {
+                    "$ref": "#/components/schemas/SubscriberCreateInput"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Subscriber Full Output",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/SubscriberFullOutput"
+                    }
+                  }
                 }
               }
             }
@@ -89,7 +154,19 @@ describe('OpenApi', () => {
             "tags": [
               "subscriber"
             ],
-            "description": "Retrieve the Subscriber"
+            "description": "Retrieve the Subscriber",
+            "responses": {
+              "200": {
+                "description": "Subscriber Full Output",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/SubscriberFullOutput"
+                    }
+                  }
+                }
+              }
+            }
           },
           "put": {
             "tags": [
@@ -99,11 +176,22 @@ describe('OpenApi', () => {
             "description": "Update the Subscriber",
             "summary": "Update the Subscriber",
             "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SubscriberUpdateInput"
+                  }
+                }
+              }
+            },
+            "responses": {
               "200": {
                 "description": "Subscriber Full Output",
                 "content": {
                   "application/json": {
-                    "schema": "#/components/SubscriberFullOutput"
+                    "schema": {
+                      "$ref": "#/components/schemas/SubscriberFullOutput"
+                    }
                   }
                 }
               },
@@ -114,6 +202,69 @@ describe('OpenApi', () => {
                 "description": "Internal Server Error"
               }
             }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "AddressCreateInput": {
+            "properties": {
+              "street": {
+                "type": "string"
+              },
+              "number": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "SubscriberCreateInput": {
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "address": {
+                "$ref": "#/components/schemas/AddressCreateInput"
+              }
+            },
+            "type": "object"
+          },
+          "SubscriberUpdateInput": {
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "address": {
+                "$ref": "#/components/schemas/AddressCreateInput"
+              }
+            },
+            "type": "object"
+          },
+          "SubscriberFullOutput": {
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            },
+            "type": "object"
           }
         }
       }

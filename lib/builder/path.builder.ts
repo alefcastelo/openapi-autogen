@@ -1,39 +1,46 @@
 import { Definitions } from '../definitions'
 
 export interface Content {
-  [key: string]: {
-    schema?: {
-      $ref: string
+  schema?: {
+    $ref: string
+  }
+}
+
+export interface Contents {
+  [key: string]: Content
+}
+
+
+export interface Method {
+  tags?: string[]
+  summary?: string
+  description?: string
+  operationId?: string
+  requestBody?: {
+    description?: string
+    content: Content
+    required?: boolean
+  }
+  responses?: {
+    [key: string]: {
+      description: string
+      content: Contents
     }
   }
 }
 
 export interface Path {
-  [key: string]: {
-    [key: string]: {
-      tags?: string[]
-      summary?: string
-      description?: string
-      operationId?: string
-      requestBody?: {
-        description?: string
-        content: Content
-        required?: boolean
-      }
-      responses?: {
-        [key: string]: {
-          description: string
-          content: Content
-        }
-      }
-    }
-  }
+  [key: string]: Method
+}
+
+export interface Paths {
+  [key: string]: Path
 }
 
 export class PathBuilder {
   constructor(protected definitions: Definitions) {}
 
-  build(): Path {
+  build(): Paths {
     const pathsDef = this.definitions.path
     const tagsDef = this.definitions.tags
     const operationIdDef = this.definitions.operationId
@@ -42,7 +49,7 @@ export class PathBuilder {
     const requestBodyDef = this.definitions.requestBody
     const responseBodyDef = this.definitions.responseBody
 
-    const paths: Path = {}
+    const paths: Paths = {}
 
     for (const key in pathsDef) {
       const { path, method } = pathsDef[key]
@@ -71,7 +78,9 @@ export class PathBuilder {
 
         for (const content of Object.values(requestBodyDef[key])) {
           requestBody.content[content.contentType] = {
-            schema: `#/components/${content.schema}`
+            schema: {
+              $ref: `#/components/schemas/${content.schema}`
+            }
           }
         }
 
@@ -79,23 +88,28 @@ export class PathBuilder {
       }
 
       if (typeof responseBodyDef[key] !== 'undefined') {
-        const requestBody = {
+        const responseBody = {
         }
 
         for (const content of Object.values(responseBodyDef[key])) {
-          const requestBodyContent = content.contentType && content.schema ? {
+          const responseBodyContent = content.contentType && content.schema ? {
             [content.contentType]: {
-              schema: `#/components/${content.schema}`
+              schema: {
+                $ref: `#/components/schemas/${content.schema}`
+              }
             }
           }: undefined
 
-          requestBody[content.statusCode] = {
-            description: content.description,
-            content: requestBodyContent
+          responseBody[content.statusCode] = {
+            description: content.description
+          }
+
+          if (typeof responseBodyContent !== 'undefined') {
+            responseBody[content.statusCode].content = responseBodyContent
           }
         }
 
-        config['requestBody'] = requestBody
+        config['responses'] = responseBody
       }
 
       if (typeof paths[path] === 'undefined') {

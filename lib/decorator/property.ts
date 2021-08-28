@@ -1,5 +1,4 @@
 import { addProperty } from "../definitions"
-import { keyGenerator } from "../key"
 import { Target } from "../types"
 
 type PropertyParams = {
@@ -8,7 +7,7 @@ type PropertyParams = {
   description?: string
 }
 
-const PropTypeEnum = {
+export const PropTypeEnum = {
   String: "string",
   Number: "integer",
 }
@@ -24,7 +23,7 @@ const getPropType = (target: Target, propertyName: string, params: PropertyParam
     return PropTypeEnum[name]
   }
 
-  return name
+  return `#/components/schemas/${name}`
 }
 
 export function OAProperty(params: PropertyParams = {}): PropertyDecorator {

@@ -1,33 +1,32 @@
 import { OAProperty } from '../../../lib'
-import { keyGenerator } from '../../../lib/key'
 import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OAProperty', () => {
-  class AddressCreateInput {
-    @OAProperty()
-    public street: string
-
-    @OAProperty()
-    public number: number
-  }
-
-  class SubscriberCreateInput {
-    @OAProperty()
-    public firstName: string
-
-    @OAProperty()
-    public lastName: string
-
-    @OAProperty()
-    public email: string
-
-    @OAProperty()
-    public address: AddressCreateInput
-  }
-
-  const key = keyGenerator(SubscriberCreateInput.name)
 
   it('Defining OperationId', () => {
+
+    class AddressCreateInput {
+      @OAProperty()
+      public street: string
+
+      @OAProperty()
+      public number: number
+    }
+
+    class SubscriberCreateInput {
+      @OAProperty()
+      public firstName: string
+
+      @OAProperty()
+      public lastName: string
+
+      @OAProperty()
+      public email: string
+
+      @OAProperty()
+      public address: AddressCreateInput
+    }
+
     expect(getAllDefinitions().property[AddressCreateInput.name]).toEqual({
       street: {
         type: 'string',
@@ -48,7 +47,7 @@ describe('@OAProperty', () => {
         type: 'string',
       },
       address: {
-        type: 'AddressCreateInput',
+        type: '#/components/schemas/AddressCreateInput',
       }
     })
   })
