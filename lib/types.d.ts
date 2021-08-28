@@ -1,4 +1,4 @@
-export interface MethodTarget {
+export interface Target {
   constructor: { name: string }
 }
 

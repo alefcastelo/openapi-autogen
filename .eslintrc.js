@@ -18,5 +18,6 @@ module.exports = {
   ],
   rules: {
     semi: ["error", "never"],
+    '@typescript-eslint/ban-types': 'off',
   }
 }

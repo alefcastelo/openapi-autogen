@@ -1,65 +1,36 @@
-// import { merge } from "lodash";
-// import { oa } from "./openapi";
+import { addProperty } from "../definitions"
+import { keyGenerator } from "../key"
+import { Target } from "../types"
 
-// const addRequiredPropertyToSchema = (schema, propertyName) => {
-//   initializeRequiredPropertiesIfNotExists(schema)
+type PropertyParams = {
+  required?: boolean
+  type?: 'string' | 'integer'
+  description?: string
+}
 
-//   if (oa.components.schemas[schema].required.indexOf(propertyName) !== -1) {
-//     return
-//   }
+const PropTypeEnum = {
+  String: "string",
+  Number: "integer",
+}
 
-//   oa.components.schemas[schema].required.push(propertyName);
-// }
+const getPropType = (target: Target, propertyName: string, params: PropertyParams) => {
+  if (typeof params.type !== 'undefined') {
+    return params.type
+  }
 
-// const initializeSchemaIfNotExists = (schema) => {
-//   if (typeof oa.components.schemas[schema] !== 'undefined') {
-//     return
-//   }
+  const { name } = Reflect.getMetadata("design:type", target as Object, propertyName)
 
-//   oa.components.schemas[schema] = {
-//     type: 'object',
-//     properties: {}
-//   };
-// }
+  if (typeof PropTypeEnum[name] !== 'undefined') {
+    return PropTypeEnum[name]
+  }
 
-// const initializeRequiredPropertiesIfNotExists = (schema) => {
-//   if (oa.components.schemas[schema].hasOwnProperty('required') === true) {
-//     return
-//   }
+  return name
+}
 
-//   oa.components.schemas[schema] = { required: [], ...oa.components.schemas[schema] };
-// }
+export function OAProperty(params: PropertyParams = {}): PropertyDecorator {
+  return function (target: Target, propertyName: string) {
+    const type = getPropType(target, propertyName, params)
 
-// const addPropertyToSchemaType = (schema, propertyName, { required, type }) => {
-//   initializeSchemaIfNotExists(schema)
-
-//   if (required === true) {
-//     addRequiredPropertyToSchema(schema, propertyName)
-//   }
-
-//   oa.components.schemas[schema].properties[propertyName] = { type };
-// }
-
-// interface PropertyParams {
-//   required?: boolean
-//   type?: 'string' | 'number' | 'interger' | 'boolean' | 'array' | 'object'
-//   oneOf?: unknown[]
-// }
-
-// const isPrimitiveValue = (name) => {
-//   return ['String', 'Number', 'Integer', 'Boolean'].includes(name)
-// }
-
-// export function OAProperty(params: PropertyParams = {}) {
-//   return function (target: any, propertyName: string | symbol) {
-//     const schema = target.constructor.name
-
-//     const t = Reflect.getMetadata("design:type", target, propertyName);
-
-//     const type = isPrimitiveValue(t.name) ? t.name.toLowerCase() : 'object'
-
-//     const propertyDefinitions = merge({ required: false, type }, params)
-
-//     addPropertyToSchemaType(schema, propertyName, propertyDefinitions)
-//   }
-// }
+    addProperty(target.constructor.name, propertyName, { ...params, type})
+  }
+}

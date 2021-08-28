@@ -7,15 +7,9 @@ type Response = { status: number; description: string }
 type RequestBody = { schema: string, contentType: string }
 type ResponseBody = { statusCode: number, description?: string, schema?: string, contentType?: string }
 type Property = {
-  name: string
-  required: boolean
-  boolean: boolean
-  type: string
-  format: string
-  items: string
-  enum: string[]
-  default: string
-  description: string
+  required?: boolean
+  type?: string
+  description?: string
 }
 
 export interface Definitions {
@@ -44,7 +38,7 @@ export interface Definitions {
     [key: string]: Response
   }
   property: {
-    [key: string]: Property[]
+    [key: string]: { [key: string]: Property }
   }
 }
 
@@ -98,4 +92,12 @@ export const addResponseBody = (key: string, statusCode: number, description: st
   }
 
   definitions.responseBody[key].push({ statusCode, description, schema, contentType })
+}
+
+export const addProperty = (key: string, name: string, propertyParams: unknown): void => {
+  if (typeof definitions.property[key] === 'undefined') {
+    definitions.property[key] = {}
+  }
+
+  definitions.property[key][name] = propertyParams
 }
