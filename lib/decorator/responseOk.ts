@@ -2,19 +2,21 @@ import { keyGenerator } from '../key'
 import { addResponseBody } from '../definitions'
 import { ContentType, Target, Schema } from '../types'
 
-export function OAResponseXmlBody(
-  statusCode: number,
-  description: string,
-  schema?: Schema
-): MethodDecorator {
+type OkResponseParams = {
+  statusCode?: number
+  description?: string
+  schema?: Schema,
+  contentType?: ContentType,
+}
+
+export function OAOkResponse({ schema, description, contentType = 'application/json'}: OkResponseParams): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
-    const contentType: ContentType = 'application/xml'
 
     if (typeof schema === 'string' || typeof schema === 'undefined') {
-      addResponseBody(key, statusCode, description, schema, contentType)
+      addResponseBody(key, 200, description, schema, contentType)
     } else {
-      addResponseBody(key, statusCode, description, schema.name, contentType)
+      addResponseBody(key, 200, description, schema.name, contentType)
     }
   }
 }

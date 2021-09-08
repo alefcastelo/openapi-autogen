@@ -1,4 +1,4 @@
-import { OADescription, OAGet, OAOperationId, OAPost, OAProperty, OAPut, OARequestBody, OAResponseBody, OAResponseJsonBody, OASummary, OATags, OpenApi } from '../../lib'
+import { OADescription, OAGet, OAOperationId, OAParameter, OAPost, OAProperty, OAPut, OARequestBody, OAResponse, OASummary, OATags, OpenApi } from '../../lib'
 
 describe('OpenApi', () => {
   it('Defining Doc', () => {
@@ -53,31 +53,63 @@ describe('OpenApi', () => {
     class SubscriberControler {
 
       @OAPost('/subscriber')
-      @OATags(['subscriber'])
+      @OATags('subscriber')
       @OADescription('Create a new Subscriber')
       @OARequestBody(SubscriberCreateInput)
-      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
+      @OAResponse({
+        schema: SubscriberFullOutput,
+        statusCode: 200,
+        description: 'Subscriber Full Output'
+      })
       create(): void {
         return
       }
 
       @OAGet('/subscriber/{uuid}')
-      @OATags(['subscriber'])
+      @OATags('subscriber')
       @OADescription('Retrieve the Subscriber')
-      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
+      @OAParameter({
+        in: 'path',
+        name: 'uuid',
+        type: 'string',
+        format: 'uuid',
+        required: true
+      })
+      @OAResponse({
+        schema: SubscriberFullOutput,
+        statusCode: 200,
+        description: 'Subscriber Full Output'
+      })
       retrieve(): void {
         return
       }
 
       @OAPut('/subscriber/{uuid}')
-      @OATags(['subscriber'])
+      @OAParameter({
+        in: 'path',
+        name: 'uuid',
+        type: 'string',
+        format: 'uuid',
+        required: true
+      })
+      @OATags('subscriber')
       @OADescription('Update the Subscriber')
       @OASummary('Update the Subscriber')
       @OAOperationId('subscriberUpdate')
       @OARequestBody(SubscriberUpdateInput)
-      @OAResponseJsonBody(200, 'Subscriber Full Output', SubscriberFullOutput)
-      @OAResponseBody(404, 'Subscriber Not Found')
-      @OAResponseBody(500, 'Internal Server Error')
+      @OAResponse({
+        schema: SubscriberFullOutput,
+        statusCode: 200,
+        description: 'Subscriber Full Output'
+      })
+      @OAResponse({
+        statusCode: 404,
+        description: 'Subscriber Not Found'
+      })
+      @OAResponse({
+        statusCode: 500,
+        description: 'Internal Server Error'
+      })
       update(): void {
         return
       }
@@ -96,7 +128,7 @@ describe('OpenApi', () => {
 
     const doc = openApi.build()
 
-    expect(doc).toEqual( {
+    expect(doc).toEqual({
       "openapi": "3.0.2",
       "info": {
         "title": "Eclesi API",
@@ -155,6 +187,17 @@ describe('OpenApi', () => {
               "subscriber"
             ],
             "description": "Retrieve the Subscriber",
+            "parameters": [
+              {
+                "in": "path",
+                "name": "uuid",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
             "responses": {
               "200": {
                 "description": "Subscriber Full Output",
@@ -175,6 +218,17 @@ describe('OpenApi', () => {
             "operationId": "subscriberUpdate",
             "description": "Update the Subscriber",
             "summary": "Update the Subscriber",
+            "parameters": [
+              {
+                "in": "path",
+                "name": "uuid",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
             "requestBody": {
               "content": {
                 "application/json": {

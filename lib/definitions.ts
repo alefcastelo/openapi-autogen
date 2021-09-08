@@ -9,6 +9,16 @@ type ResponseBody = { statusCode: number, description?: string, schema?: string,
 type Property = {
   required?: boolean
   type?: string
+  $ref?: string
+  description?: string
+}
+type Parameter = {
+  in?: 'query' | 'header' | 'path' | 'cookie'
+  name?: string
+  schema?: {
+    type?: string
+  }
+  required?: boolean
   description?: string
 }
 
@@ -40,6 +50,9 @@ export interface Definitions {
   property: {
     [key: string]: { [key: string]: Property }
   }
+  parameter: {
+    [key: string]: Parameter[]
+  }
 }
 
 const definitions: Definitions = {
@@ -51,7 +64,8 @@ const definitions: Definitions = {
   requestBody: {},
   responseBody: {},
   response: {},
-  property: {}
+  property: {},
+  parameter: {}
 }
 
 export const getAllDefinitions = (): Definitions => {
@@ -100,4 +114,12 @@ export const addProperty = (key: string, name: string, propertyParams: unknown):
   }
 
   definitions.property[key][name] = propertyParams
+}
+
+export const addParameter = (key: string, parameterParams: unknown): void => {
+  if (typeof definitions.parameter[key] === 'undefined') {
+    definitions.parameter[key] = []
+  }
+
+  definitions.parameter[key].push(parameterParams)
 }

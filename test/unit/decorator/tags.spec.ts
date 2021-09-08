@@ -4,7 +4,7 @@ import { getAllDefinitions } from '../../../lib/definitions'
 
 describe('@OATags', () => {
   class Action {
-    @OATags(['subscriber', 'global'])
+    @OATags('subscriber', 'global')
     handle(): void {
       return
     }

@@ -2,14 +2,16 @@ import { keyGenerator } from '../key'
 import { addResponseBody } from '../definitions'
 import { ContentType, Target, Schema } from '../types'
 
-export function OAResponseJsonBody(
-  statusCode: number,
-  description: string,
-  schema?: Schema
-): MethodDecorator {
+export type ResponseParams = {
+  statusCode?: number
+  description?: string
+  schema?: Schema,
+  contentType?: ContentType,
+}
+
+export function OAResponse({ schema, statusCode, description, contentType = 'application/json'}: ResponseParams): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
-    const contentType: ContentType = 'application/json'
 
     if (typeof schema === 'string' || typeof schema === 'undefined') {
       addResponseBody(key, statusCode, description, schema, contentType)

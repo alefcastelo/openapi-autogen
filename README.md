@@ -7,29 +7,29 @@
 @OAPut('/subscriber/{uuid}')
 @OAGet('/subscriber/{uuid}')
 @OADelete('/subscriber/{uuid}')
-@OATags(['subscriber'])
+@OATags('subscriber')
 @OASummary('Subscriber Create')
 @OADescription('Subscriber Create Endpoint')
 @OAOperationId('subscriberCreate')
 @OARequestJsonBody(SubscriberCreateInput)
 @OARequestXmlBody(SubscriberCreateInput)
-@OAResponseJsonBody(SubscriberFullOutput)
-@OAResponseXmlBody(SubscriberFullOutput)
+@OAResponse({
+  status: 200,
+  type: SubscriberFullOutput,
+  description: 'Subscriber Full Xml Output',
+  contentType: 'application/json'
+})
+@OAResponse(200, 'Subscriber Full Xml Output', 'SubscriberFullOutput')
+@OAOkResponseJson('SubscriberFullOutput', 'Status Code 200 to ')
+@OACreatedResponseJson('SubscriberFullOutput', 'Subscriber Full Xml Output')
 @OASchema()
 @OAParameter({
-  name: '',
-  in: 'path',
-  description: 'description',
-  required: true,
-  type: 'string',
-})
-@OAParameter({
-  name: '',
   in: 'query',
-  description: 'description',
+  name: 'uuid',
+  type: 'string',
+  format: 'uuid',
   required: true,
-  type: 'int',
-  format: 'int64',
+  description: 'description',
 })
 @OAResponse({
   status: 200,

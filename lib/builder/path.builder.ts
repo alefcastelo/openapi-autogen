@@ -10,12 +10,26 @@ export interface Contents {
   [key: string]: Content
 }
 
+type Parameter = {
+  in: 'query' | 'header' | 'path' | 'cookie' | 'body' | 'formData'
+  name: string
+  schema: {
+    type: string,
+    format: string,
+  }
+  description?: string
+  required?: boolean
+  defaultValue?: string
+}
+
+type Parameters = Parameter[]
 
 export interface Method {
   tags?: string[]
   summary?: string
   description?: string
   operationId?: string
+  parameters?: Parameters
   requestBody?: {
     description?: string
     content: Content
@@ -46,6 +60,7 @@ export class PathBuilder {
     const operationIdDef = this.definitions.operationId
     const descriptionDef = this.definitions.description
     const summaryDef = this.definitions.summary
+    const parameterDef = this.definitions.parameter
     const requestBodyDef = this.definitions.requestBody
     const responseBodyDef = this.definitions.responseBody
 
@@ -69,6 +84,10 @@ export class PathBuilder {
 
       if (typeof summaryDef[key] !== 'undefined') {
         config['summary'] = summaryDef[key].summary
+      }
+
+      if (typeof parameterDef[key] !== 'undefined') {
+        config['parameters'] = parameterDef[key]
       }
 
       if (typeof requestBodyDef[key] !== 'undefined') {

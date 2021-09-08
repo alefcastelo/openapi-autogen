@@ -3,33 +3,31 @@ import { Target } from "../types"
 
 type PropertyParams = {
   required?: boolean
-  type?: 'string' | 'integer'
+  type?: 'string' | 'integer' | 'number' | 'boolean' | 'array' | 'object'
+  $ref?: string
   description?: string
 }
 
-export const PropTypeEnum = {
+export const PropType = {
   String: "string",
   Number: "integer",
 }
 
-const getPropType = (target: Target, propertyName: string, params: PropertyParams) => {
-  if (typeof params.type !== 'undefined') {
-    return params.type
-  }
-
-  const { name } = Reflect.getMetadata("design:type", target as Object, propertyName)
-
-  if (typeof PropTypeEnum[name] !== 'undefined') {
-    return PropTypeEnum[name]
-  }
-
-  return `#/components/schemas/${name}`
-}
-
 export function OAProperty(params: PropertyParams = {}): PropertyDecorator {
   return function (target: Target, propertyName: string) {
-    const type = getPropType(target, propertyName, params)
 
-    addProperty(target.constructor.name, propertyName, { ...params, type})
+    if (typeof params.type !== 'undefined') {
+      addProperty(target.constructor.name, propertyName, params)
+      return
+    }
+
+    const { name } = Reflect.getMetadata("design:type", target as Object, propertyName)
+
+    if (typeof PropType[name] !== 'undefined') {
+      addProperty(target.constructor.name, propertyName, { ...params, type: PropType[name] })
+      return
+    }
+
+    addProperty(target.constructor.name, propertyName, { ...params, $ref: `#/components/schemas/${name}`})
   }
 }

@@ -36,12 +36,7 @@ export class SchemaBuilder {
       const properties = {}
 
       for (const property in schemasDef[schema]) {
-        const { type } = schemasDef[schema][property]
-        const propType = isRef(type) ? '$ref' : 'type'
-
-        properties[property] = {
-          [propType]: type,
-        }
+        properties[property] = schemasDef[schema][property]
       }
 
       schemas[schema].properties = properties

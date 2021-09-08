@@ -47,7 +47,7 @@ describe('@OAProperty', () => {
         type: 'string',
       },
       address: {
-        type: '#/components/schemas/AddressCreateInput',
+        $ref: '#/components/schemas/AddressCreateInput',
       }
     })
   })
