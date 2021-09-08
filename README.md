@@ -47,7 +47,7 @@
 
 @OARequest({
   body: SubscriberCreateInput,
-  contentType: '*/*'
+  desciption: 'Create a new Subscriber'
 })
 
 // Response
@@ -57,7 +57,6 @@
   contentType: 'application/json',
   description: 'description'
 })
-
 
 // Response with status code 200
 @OAOkResponse({ body: SubscriberFullOutput })
