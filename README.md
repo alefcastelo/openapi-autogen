@@ -1,51 +1,137 @@
 ```typescript
+// Path
 @OAPath('/subscriber', 'post')
 @OAPath('/subscriber/{uuid}', 'get')
 @OAPath('/subscriber/{uuid}', 'put')
 @OAPath('/subscriber/{uuid}', 'delete')
+
+// Path Method
 @OAPost('/subscriber')
 @OAPut('/subscriber/{uuid}')
 @OAGet('/subscriber/{uuid}')
 @OADelete('/subscriber/{uuid}')
-@OATags('subscriber')
-@OASummary('Subscriber Create')
-@OADescription('Subscriber Create Endpoint')
-@OAOperationId('subscriberCreate')
-@OARequestJsonBody(SubscriberCreateInput)
-@OARequestXmlBody(SubscriberCreateInput)
-@OAResponse({
-  status: 200,
-  type: SubscriberFullOutput,
-  description: 'Subscriber Full Xml Output',
-  contentType: 'application/json'
-})
-@OAResponse(200, 'Subscriber Full Xml Output', 'SubscriberFullOutput')
-@OAOkResponseJson('SubscriberFullOutput', 'Status Code 200 to ')
-@OACreatedResponseJson('SubscriberFullOutput', 'Subscriber Full Xml Output')
-@OASchema()
+
+// Path Parameter
 @OAParameter({
-  in: 'query',
+  in: 'path',
   name: 'uuid',
   type: 'string',
   format: 'uuid',
   required: true,
   description: 'description',
 })
+
+// Tags
+@OATags('subscriber')
+@OATags('subscriber', 'global')
+
+// Summary
+@OASummary('Subscriber Create')
+
+// Description
+@OADescription('Subscriber Create Endpoint')
+
+// OperationId
+@OAOperationId('subscriberCreate')
+
+// Request
+@OARequest({
+  body: SubscriberCreateInput
+})
+
+// Request with accept content type
+@OARequest({
+  body: SubscriberCreateInput,
+  contentType: 'application/json'
+})
+
+@OARequest({
+  body: SubscriberCreateInput,
+  contentType: '*/*'
+})
+
+// Response
 @OAResponse({
-  status: 200,
+  body: SubscriberFullOutput,
+  statusCode: 200,
+  contentType: 'application/json',
   description: 'description'
 })
-@OAResponse({
-  status: 500,
-  description: 'Internal Server Error',
-  body: InternalServerErrorOutput
-})
+
+
+// Response with status code 200
+@OAOkResponse({ body: SubscriberFullOutput })
+
+// Response with status code 201
+@OACreatedResponse({ body: SubscriberFullOutput })
+
+// Response with status code 400
+@OABadRequestResponse({ body: BadRequestOutput })
+
+// Response with status code 401
+@OAUnauthorizedResponse({ body: UnauthorizedOutput })
+
+// Response with status code 403
+@OAForbiddenResponse({ body: ForbiddenOutput })
+@OAAccessDeniedResponse({ body: AccessDeniedOutput })
+
+// Response with status code 500
+@OAServerErrorResponse({ body: ServerErrorOutput })
+
+// Property
+@OAProperty()
+
+// Property Int
 @OAProperty({
   required: true,
-  type: 'int',
-  description: 'int',
+  type: 'integer', // string | number | integer | boolean | array | object
+  description: 'Subscriber Id',
   format: 'int64',
   example: 1,
-  enum: ['available', 'pending', 'sold']
+})
+
+// Property Enum
+@OAProperty({
+  required: true,
+  type: 'enum',
+  enum: ['accepted', 'rejected'],
+  description: 'Subscriber Status'
+})
+
+// Property OneOf
+@OAProperty({
+  required: true,
+  oneOf: [
+    { type: 'integer', format: 'int64', example: 1 },
+    { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000' }
+  ],
+  description: 'Subscriber Id'
+})
+
+// Property OneOf
+@OAProperty({
+  required: true,
+  oneOf: [
+    AddresCreateInput,
+    AddresUpdateInput
+  ]
+})
+
+// Property OneOf
+@OAProperty({
+  required: true,
+  oneOf: [
+    AddresCreateInput,
+    { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000' }
+  ]
+})
+
+// Property AnyOf
+@OAProperty({
+  required: true,
+  anyOf: [
+    AddresCreateInput,
+    AddresUpdateInput
+  ]
 })
 ```
