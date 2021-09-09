@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type ForbiddenResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type ForbiddenResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OAForbiddenResponse(params: ForbiddenResponseParams = {}): Metho
 
     let response = {}
     const statusCode = 403
-    const description = 'Forbidden'
+    const description = params.description ?? 'Forbidden'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }

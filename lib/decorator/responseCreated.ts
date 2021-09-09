@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type CreatedResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type CreatedResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OACreatedResponse(params: CreatedResponseParams = {}): MethodDec
 
     let response = {}
     const statusCode = 201
-    const description = 'Created'
+    const description = params.description ?? 'Created'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }

@@ -6,15 +6,15 @@ type RequestParams = Omit<Request, 'body'> & {
   body?: string | { name: string }
 }
 
-export function OARequest({body, contentType = 'application/json'}: RequestParams): MethodDecorator {
+export function OARequest(params: RequestParams): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
 
-    if (typeof body === 'string') {
-      addRequest(key, { body, contentType })
+    if (typeof params.body === 'string') {
+      addRequest(key, { ...params, body: params.body })
       return
     }
 
-    addRequest(key, { body: body.name, contentType })
+    addRequest(key, { ...params, body: params.body.name })
   }
 }

@@ -117,6 +117,10 @@ export const addRequest = (key: string, request: Request): void => {
     definitions.requests[key] = []
   }
 
+  if (typeof request.contentType === 'undefined') {
+    request.contentType = 'application/json'
+  }
+
   definitions.requests[key].push(request)
 }
 

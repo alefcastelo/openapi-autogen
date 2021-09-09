@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type OkResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type OkResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OAOkResponse(params: OkResponseParams = {}): MethodDecorator {
 
     let response = {}
     const statusCode = 200
-    const description = 'Ok'
+    const description = params.description ?? 'Ok'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }

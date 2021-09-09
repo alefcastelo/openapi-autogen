@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type UnauthorizedResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type UnauthorizedResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OAUnauthorizedResponse(params: UnauthorizedResponseParams = {}):
 
     let response = {}
     const statusCode = 401
-    const description = 'Unauthorized'
+    const description = params.description ?? 'Unauthorized'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }

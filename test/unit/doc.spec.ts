@@ -1,4 +1,4 @@
-import { OADescription, OAGet, OAOperationId, OAParameter, OAPost, OAProperty, OAPut, OARequest, OAResponse, OASummary, OATags, OpenApi } from '../../lib'
+import { OADescription, OAGet, OANotFoundResponse, OAOkResponse, OAOperationId, OAParameter, OAPost, OAProperty, OAPut, OARequest, OAResponse, OAServerErrorResponse, OASummary, OATags, OpenApi } from '../../lib'
 
 describe('OpenApi', () => {
   it('Defining Doc', () => {
@@ -77,9 +77,8 @@ describe('OpenApi', () => {
         format: 'uuid',
         required: true
       })
-      @OAResponse({
+      @OAOkResponse({
         body: SubscriberFullOutput,
-        statusCode: 200,
         description: 'Subscriber Full Output'
       })
       retrieve(): void {
@@ -101,19 +100,14 @@ describe('OpenApi', () => {
       @OARequest({
         body: SubscriberUpdateInput
       })
-      @OAResponse({
+      @OAOkResponse({
         body: SubscriberFullOutput,
-        statusCode: 200,
         description: 'Subscriber Full Output'
       })
-      @OAResponse({
-        statusCode: 404,
+      @OANotFoundResponse({
         description: 'Subscriber Not Found'
       })
-      @OAResponse({
-        statusCode: 500,
-        description: 'Internal Server Error'
-      })
+      @OAServerErrorResponse()
       update(): void {
         return
       }

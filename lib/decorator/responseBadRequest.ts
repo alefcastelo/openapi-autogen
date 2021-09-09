@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type BadRequestResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type BadRequestResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OABadRequestResponse(params: BadRequestResponseParams = {}): Met
 
     let response = {}
     const statusCode = 400
-    const description = 'Bad Request'
+    const description = params.description ?? 'Bad Request'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }

@@ -2,7 +2,7 @@ import { keyGenerator } from '../key'
 import { addResponse, Response } from '../definitions'
 import { Target } from '../types'
 
-type AccessDeniedResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+type AccessDeniedResponseParams = Omit<Response, 'body' | 'statusCode'> & {
   body?: string | { name: string}
 }
 
@@ -12,7 +12,7 @@ export function OAAccessDeniedResponse(params: AccessDeniedResponseParams = {}):
 
     let response = {}
     const statusCode = 403
-    const description = 'Access Denied'
+    const description = params.description ?? 'Access Denied'
 
     if (typeof params.body === 'string' || typeof params.body === 'undefined') {
       response = { ...params, statusCode, description, body: params.body }
