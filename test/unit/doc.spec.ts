@@ -1,4 +1,4 @@
-import { OADescription, OAGet, OAOperationId, OAParameter, OAPost, OAProperty, OAPut, OARequestBody, OAResponse, OASummary, OATags, OpenApi } from '../../lib'
+import { OADescription, OAGet, OAOperationId, OAParameter, OAPost, OAProperty, OAPut, OARequest, OAResponse, OASummary, OATags, OpenApi } from '../../lib'
 
 describe('OpenApi', () => {
   it('Defining Doc', () => {
@@ -55,9 +55,11 @@ describe('OpenApi', () => {
       @OAPost('/subscriber')
       @OATags('subscriber')
       @OADescription('Create a new Subscriber')
-      @OARequestBody(SubscriberCreateInput)
+      @OARequest({
+        body: SubscriberCreateInput
+      })
       @OAResponse({
-        schema: SubscriberFullOutput,
+        body: SubscriberFullOutput,
         statusCode: 200,
         description: 'Subscriber Full Output'
       })
@@ -76,7 +78,7 @@ describe('OpenApi', () => {
         required: true
       })
       @OAResponse({
-        schema: SubscriberFullOutput,
+        body: SubscriberFullOutput,
         statusCode: 200,
         description: 'Subscriber Full Output'
       })
@@ -96,9 +98,11 @@ describe('OpenApi', () => {
       @OADescription('Update the Subscriber')
       @OASummary('Update the Subscriber')
       @OAOperationId('subscriberUpdate')
-      @OARequestBody(SubscriberUpdateInput)
+      @OARequest({
+        body: SubscriberUpdateInput
+      })
       @OAResponse({
-        schema: SubscriberFullOutput,
+        body: SubscriberFullOutput,
         statusCode: 200,
         description: 'Subscriber Full Output'
       })

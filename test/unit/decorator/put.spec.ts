@@ -15,7 +15,6 @@ describe('@OAPut', () => {
   it('Defining Put', () => {
     const definitions = getAllDefinitions()
 
-    expect(definitions.path[key].path).toEqual('/subscriber/{uuid}')
-    expect(definitions.path[key].method).toEqual('put')
+    expect(definitions.path[key]).toEqual({ path: '/subscriber/{uuid}', method: 'put' })
   })
 })

@@ -13,6 +13,6 @@ describe('@OASummary', () => {
   const key = keyGenerator(Action.name, 'handle')
 
   it('Defining Summary', () => {
-    expect(getAllDefinitions().summary[key].summary).toEqual('User Create')
+    expect(getAllDefinitions().summary[key]).toEqual('User Create')
   })
 })

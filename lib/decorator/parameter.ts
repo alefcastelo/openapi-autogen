@@ -19,8 +19,8 @@ export function OAParameter({ type, format, ...parameter}: ParameterParams): Met
     addParameter(key, {
       ...parameter,
       schema: {
-        type: type,
-        format: format,
+        type,
+        format,
       },
     })
   }

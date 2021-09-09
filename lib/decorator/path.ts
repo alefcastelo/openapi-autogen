@@ -1,16 +1,11 @@
-import { keyGenerator } from '../key'
-import { addPath } from '../definitions'
 import { Target } from '../types'
+import { keyGenerator } from '../key'
+import { addPath, MethodParam, PathParam } from '../definitions'
 
-export interface PathParams {
-  path: string
-  method: string
-}
-
-export function OAPath(path: string, method: string): MethodDecorator {
+export function OAPath(path: PathParam, method: MethodParam): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
 
-    addPath(key, path, method)
+    addPath(key, { path, method })
   }
 }

@@ -13,6 +13,6 @@ describe('@OAOperationId', () => {
   const key = keyGenerator(Action.name, 'handle')
 
   it('Defining OperationId', () => {
-    expect(getAllDefinitions().operationId[key].operationId).toEqual('create')
+    expect(getAllDefinitions().operationId[key]).toEqual('create')
   })
 })

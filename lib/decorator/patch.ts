@@ -1,13 +1,11 @@
 import { keyGenerator } from '../key'
-import { addDescription, Description } from '../definitions'
+import { addPath, PathParam } from '../definitions'
 import { Target } from '../types'
 
-type DescriptionParam = Description
-
-export function OADescription(description: DescriptionParam): MethodDecorator {
+export function OAPatch(path: PathParam): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
 
-    addDescription(key, description)
+    addPath(key, { path, method: 'patch' })
   }
 }

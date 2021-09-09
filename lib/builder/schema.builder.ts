@@ -19,10 +19,6 @@ export interface Schemas {
   [key: string]: Schema
 }
 
-const isRef = (type) => {
-  return ['string', 'number', 'integer', 'boolean', 'array'].indexOf(type) === -1
-}
-
 export class SchemaBuilder {
   constructor(protected definitions: Definitions) {}
 

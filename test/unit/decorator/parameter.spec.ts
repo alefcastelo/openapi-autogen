@@ -19,7 +19,7 @@ describe('@OAParameter', () => {
   const key = keyGenerator(Action.name, 'handle')
 
   it('Defining Tags', () => {
-    expect(getAllDefinitions().parameter[key][0]).toEqual({
+    expect(getAllDefinitions().parameters[key][0]).toEqual({
       in: "query",
       name: "uuid",
       required: true,

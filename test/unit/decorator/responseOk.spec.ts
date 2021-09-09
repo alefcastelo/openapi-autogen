@@ -1,12 +1,12 @@
-import { OAResponse } from '../../../lib'
+import { OAOkResponse } from '../../../lib'
 import { keyGenerator } from '../../../lib/key'
 import { getAllDefinitions } from '../../../lib/definitions'
 
-describe('@OAResponse', () => {
+describe('@OAOkResponse', () => {
 
   it('Defining Response Body', () => {
     class Action1 {
-      @OAResponse({ statusCode: 200, description: 'Subscriber Full Output'})
+      @OAOkResponse()
       handle(): void {
         return
       }
@@ -16,7 +16,7 @@ describe('@OAResponse', () => {
     const definitions = getAllDefinitions()
 
     expect(definitions.responses[key][0].statusCode).toEqual(200)
-    expect(definitions.responses[key][0].description).toEqual('Subscriber Full Output')
+    expect(definitions.responses[key][0].description).toEqual('Ok')
     expect(definitions.responses[key][0].contentType).toEqual('application/json')
     expect(definitions.responses[key][0].body).toEqual(undefined)
   })
@@ -24,10 +24,8 @@ describe('@OAResponse', () => {
   it('Defining Response Body', () => {
 
     class Action2 {
-      @OAResponse({
+      @OAOkResponse({
         body: 'SubscriberFullOutput',
-        statusCode: 200,
-        description: 'Subscriber Full Output'
       })
       handle(): void {
         return
@@ -38,7 +36,7 @@ describe('@OAResponse', () => {
     const definitions = getAllDefinitions()
 
     expect(definitions.responses[key][0].statusCode).toEqual(200)
-    expect(definitions.responses[key][0].description).toEqual('Subscriber Full Output')
+    expect(definitions.responses[key][0].description).toEqual('Ok')
     expect(definitions.responses[key][0].body).toEqual('SubscriberFullOutput')
     expect(definitions.responses[key][0].contentType).toEqual('application/json')
   })

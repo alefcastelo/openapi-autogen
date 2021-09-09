@@ -13,6 +13,6 @@ describe('@OADescription', () => {
   const key = keyGenerator(Action.name, 'handle')
 
   it('Defining Description', () => {
-    expect(getAllDefinitions().description[key].description).toEqual('User Create')
+    expect(getAllDefinitions().description[key]).toEqual('User Create')
   })
 })

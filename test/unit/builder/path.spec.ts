@@ -1,6 +1,6 @@
 import { getAllDefinitions } from '../../../lib/definitions'
 import { PathBuilder } from '../../../lib/builder/path.builder'
-import { OADescription, OAGet, OAOperationId, OAPost, OAPut, OARequestBody, OAResponse, OASummary, OATags } from '../../../lib'
+import { OADescription, OAGet, OAOperationId, OAPost, OAPut, OARequest, OAResponse, OASummary, OATags } from '../../../lib'
 
 describe('PathBuilder', () => {
 
@@ -9,7 +9,7 @@ describe('PathBuilder', () => {
     @OAPost('/subscriber')
     @OATags('subscriber')
     @OADescription('Create a new Subscriber')
-    @OARequestBody('SubscriberCreateInput')
+    @OARequest({ body: 'SubscriberCreateInput'})
     create(): void {
       return
     }
@@ -27,10 +27,10 @@ describe('PathBuilder', () => {
     @OADescription('Update the Subscriber')
     @OASummary('Update the Subscriber')
     @OAOperationId('subscriberUpdate')
-    @OARequestBody('SubscriberUpdateInput')
-    @OAResponse({ schema: 'SubscriberFullOutput', statusCode:200, description: 'Subscriber Full Output'})
-    @OAResponse({ statusCode:404, description: 'Subscriber Not Found'})
-    @OAResponse({ statusCode:500, description: 'Internal Server Error'})
+    @OARequest({ body: 'SubscriberUpdateInput' })
+    @OAResponse({ body: 'SubscriberFullOutput', statusCode:200, description: 'Subscriber Full Output'})
+    @OAResponse({ statusCode: 404, description: 'Subscriber Not Found'})
+    @OAResponse({ statusCode: 500, description: 'Internal Server Error'})
     update(): void {
       return
     }

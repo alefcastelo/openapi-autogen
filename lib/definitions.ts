@@ -1,25 +1,49 @@
-type Path = { path: string; method: string }
-type Tags = { tags: string[] }
-type Summary = { summary: string }
-type Description = { description: string }
-type OperationId = { operationId: string }
-type Response = { status: number; description: string }
-type RequestBody = { schema: string, contentType: string }
-type ResponseBody = { statusCode: number, description?: string, schema?: string, contentType?: string }
-type Property = {
+export type StatusCode = 200 | 201 | 202 | 204 | 400 | 401 | 403 | 404 | 405 | 500
+export type PathParam = string
+export type MethodParam = 'post' | 'get' | 'put' | 'delete' | 'patch'
+export type ContentType = 'application/json' | 'application/xml' | 'application/x-www-form-urlencoded'
+
+export type Path = {
+  path: PathParam
+  method: MethodParam
+}
+
+export type Tags = string[]
+
+export type Summary = string
+
+export type Description = string
+
+export type OperationId = string
+
+export type Request = {
+  body?: string,
+  contentType?: ContentType
+}
+
+export type Response = {
+  body?: string,
+  statusCode?: StatusCode,
+  description?: Description,
+  contentType?: ContentType
+}
+
+export type Property = {
   required?: boolean
   type?: string
   $ref?: string
-  description?: string
+  description?: Description
 }
-type Parameter = {
-  in?: 'query' | 'header' | 'path' | 'cookie'
+
+export type Parameter = {
+  in?: 'query' | 'header' | 'path' | 'cookie' | 'body' | 'formData'
   name?: string
   schema?: {
-    type?: string
+    type?: string,
+    format?: string,
   }
   required?: boolean
-  description?: string
+  description?: Description
 }
 
 export interface Definitions {
@@ -38,19 +62,16 @@ export interface Definitions {
   operationId: {
     [key: string]: OperationId
   }
-  requestBody: {
-    [key: string]: RequestBody[]
+  requests: {
+    [key: string]: Request[]
   }
-  responseBody: {
-    [key: string]: ResponseBody[]
-  }
-  response: {
-    [key: string]: Response
+  responses: {
+    [key: string]: Response[]
   }
   property: {
     [key: string]: { [key: string]: Property }
   }
-  parameter: {
+  parameters: {
     [key: string]: Parameter[]
   }
 }
@@ -61,11 +82,10 @@ const definitions: Definitions = {
   summary: {},
   description: {},
   operationId: {},
-  requestBody: {},
-  responseBody: {},
-  response: {},
+  requests: {},
+  responses: {},
   property: {},
-  parameter: {}
+  parameters: {}
 }
 
 export const getAllDefinitions = (): Definitions => {
@@ -73,53 +93,57 @@ export const getAllDefinitions = (): Definitions => {
 }
 
 export const addDescription = (key: string, description: string): void => {
-  definitions.description[key] = { description }
+  definitions.description[key] = description
 }
 
 export const addSummary = (key: string, summary: string): void => {
-  definitions.summary[key] = { summary }
+  definitions.summary[key] = summary
 }
 
-export const addTags = (key: string, tags: string[]): void => {
-  definitions.tags[key] = { tags }
+export const addTags = (key: string, tags: Tags): void => {
+  definitions.tags[key] = tags
 }
 
 export const addOperationId = (key: string, operationId: string): void => {
-  definitions.operationId[key] = { operationId }
+  definitions.operationId[key] = operationId
 }
 
-export const addPath = (key: string, path: string, method: string): void => {
-  definitions.path[key] = { path, method }
+export const addPath = (key: string, path: Path): void => {
+  definitions.path[key] = path
 }
 
-export const addRequestBody = (key: string, schema: string, contentType: string): void => {
-  if (typeof definitions.requestBody[key] === 'undefined') {
-    definitions.requestBody[key] = []
+export const addRequest = (key: string, request: Request): void => {
+  if (typeof definitions.requests[key] === 'undefined') {
+    definitions.requests[key] = []
   }
 
-  definitions.requestBody[key].push({ schema, contentType })
+  definitions.requests[key].push(request)
 }
 
-export const addResponseBody = (key: string, statusCode: number, description: string, schema?: string, contentType?: string): void => {
-  if (typeof definitions.responseBody[key] === 'undefined') {
-    definitions.responseBody[key] = []
+export const addResponse = (key: string, response: Response): void => {
+  if (typeof definitions.responses[key] === 'undefined') {
+    definitions.responses[key] = []
   }
 
-  definitions.responseBody[key].push({ statusCode, description, schema, contentType })
+  if (typeof response.contentType === 'undefined') {
+    response.contentType = 'application/json'
+  }
+
+  definitions.responses[key].push(response)
 }
 
-export const addProperty = (key: string, name: string, propertyParams: unknown): void => {
+export const addProperty = (key: string, name: string, property: Property): void => {
   if (typeof definitions.property[key] === 'undefined') {
     definitions.property[key] = {}
   }
 
-  definitions.property[key][name] = propertyParams
+  definitions.property[key][name] = property
 }
 
-export const addParameter = (key: string, parameterParams: unknown): void => {
-  if (typeof definitions.parameter[key] === 'undefined') {
-    definitions.parameter[key] = []
+export const addParameter = (key: string, parameter: Parameter): void => {
+  if (typeof definitions.parameters[key] === 'undefined') {
+    definitions.parameters[key] = []
   }
 
-  definitions.parameter[key].push(parameterParams)
+  definitions.parameters[key].push(parameter)
 }

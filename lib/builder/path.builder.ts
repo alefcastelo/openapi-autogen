@@ -1,4 +1,4 @@
-import { Definitions } from '../definitions'
+import {  Definitions } from '../definitions'
 
 export interface Content {
   schema?: {
@@ -30,7 +30,7 @@ export interface Method {
   description?: string
   operationId?: string
   parameters?: Parameters
-  requestBody?: {
+  request?: {
     description?: string
     content: Content
     required?: boolean
@@ -55,87 +55,88 @@ export class PathBuilder {
   constructor(protected definitions: Definitions) {}
 
   build(): Paths {
-    const pathsDef = this.definitions.path
-    const tagsDef = this.definitions.tags
-    const operationIdDef = this.definitions.operationId
-    const descriptionDef = this.definitions.description
-    const summaryDef = this.definitions.summary
-    const parameterDef = this.definitions.parameter
-    const requestBodyDef = this.definitions.requestBody
-    const responseBodyDef = this.definitions.responseBody
+    const {
+      path,
+      description,
+      summary,
+      tags,
+      operationId,
+      parameters,
+      requests,
+      responses
+    } = this.definitions
 
     const paths: Paths = {}
 
-    for (const key in pathsDef) {
-      const { path, method } = pathsDef[key]
+    for (const key in path) {
       const config = {}
 
-      if (typeof tagsDef[key] !== 'undefined') {
-        config['tags'] = tagsDef[key].tags
+      if (typeof tags[key] !== 'undefined') {
+        config['tags'] = tags[key]
       }
 
-      if (typeof operationIdDef[key] !== 'undefined') {
-        config['operationId'] = operationIdDef[key].operationId
+      if (typeof operationId[key] !== 'undefined') {
+        config['operationId'] = operationId[key]
       }
 
-      if (typeof descriptionDef[key] !== 'undefined') {
-        config['description'] = descriptionDef[key].description
+      if (typeof description[key] !== 'undefined') {
+        config['description'] = description[key]
       }
 
-      if (typeof summaryDef[key] !== 'undefined') {
-        config['summary'] = summaryDef[key].summary
+      if (typeof summary[key] !== 'undefined') {
+        config['summary'] = summary[key]
       }
 
-      if (typeof parameterDef[key] !== 'undefined') {
-        config['parameters'] = parameterDef[key]
+      if (typeof parameters[key] !== 'undefined') {
+        config['parameters'] = parameters[key]
       }
 
-      if (typeof requestBodyDef[key] !== 'undefined') {
-        const requestBody = {
+      if (typeof requests[key] !== 'undefined') {
+        const request = {
           content: {}
         }
 
-        for (const content of Object.values(requestBodyDef[key])) {
-          requestBody.content[content.contentType] = {
+        for (const content of Object.values(requests[key])) {
+          request.content[content.contentType] = {
             schema: {
-              $ref: `#/components/schemas/${content.schema}`
+              $ref: `#/components/schemas/${content.body}`
             }
           }
         }
 
-        config['requestBody'] = requestBody
+        config['requestBody'] = request
       }
 
-      if (typeof responseBodyDef[key] !== 'undefined') {
-        const responseBody = {
+      if (typeof responses[key] !== 'undefined') {
+        const response = {
         }
 
-        for (const content of Object.values(responseBodyDef[key])) {
-          const responseBodyContent = content.contentType && content.schema ? {
+        for (const content of Object.values(responses[key])) {
+          const responseContent = content.contentType && content.body ? {
             [content.contentType]: {
               schema: {
-                $ref: `#/components/schemas/${content.schema}`
+                $ref: `#/components/schemas/${content.body}`
               }
             }
           }: undefined
 
-          responseBody[content.statusCode] = {
+          response[content.statusCode] = {
             description: content.description
           }
 
-          if (typeof responseBodyContent !== 'undefined') {
-            responseBody[content.statusCode].content = responseBodyContent
+          if (typeof responseContent !== 'undefined') {
+            response[content.statusCode].content = responseContent
           }
         }
 
-        config['responses'] = responseBody
+        config['responses'] = response
       }
 
-      if (typeof paths[path] === 'undefined') {
-        paths[path] = {}
+      if (typeof paths[path[key].path] === 'undefined') {
+        paths[path[key].path] = {}
       }
 
-      paths[path][method] = config
+      paths[path[key].path][path[key].method] = config
     }
 
     return paths

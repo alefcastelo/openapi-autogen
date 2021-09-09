@@ -1,22 +1,25 @@
 import { keyGenerator } from '../key'
-import { addResponseBody } from '../definitions'
-import { ContentType, Target, Schema } from '../types'
+import { addResponse, Response } from '../definitions'
+import { Target } from '../types'
 
-type OkResponseParams = {
-  statusCode?: number
-  description?: string
-  schema?: Schema,
-  contentType?: ContentType,
+type OkResponseParams = Omit<Response, 'body' | 'statusCode' | 'description'> & {
+  body?: string | { name: string}
 }
 
-export function OAOkResponse({ schema, description, contentType = 'application/json'}: OkResponseParams): MethodDecorator {
+export function OAOkResponse(params: OkResponseParams = {}): MethodDecorator {
   return function (target: Target, methodName: string | symbol): void {
     const key = keyGenerator(target.constructor.name, methodName as string)
 
-    if (typeof schema === 'string' || typeof schema === 'undefined') {
-      addResponseBody(key, 200, description, schema, contentType)
+    let response = {}
+    const statusCode = 200
+    const description = 'Ok'
+
+    if (typeof params.body === 'string' || typeof params.body === 'undefined') {
+      response = { ...params, statusCode, description, body: params.body }
     } else {
-      addResponseBody(key, 200, description, schema.name, contentType)
+      response = { ...params, statusCode, description, body: params.body.name }
     }
+
+    addResponse(key, response)
   }
 }

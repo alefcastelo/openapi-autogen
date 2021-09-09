@@ -13,6 +13,6 @@ describe('@OATags', () => {
   const key = keyGenerator(Action.name, 'handle')
 
   it('Defining Tags', () => {
-    expect(getAllDefinitions().tags[key].tags).toEqual(['subscriber', 'global'])
+    expect(getAllDefinitions().tags[key]).toEqual(['subscriber', 'global'])
   })
 })
