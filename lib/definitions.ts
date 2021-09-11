@@ -28,12 +28,68 @@ export type Response = {
   contentType?: ContentType
 }
 
-export type Property = {
+type PropertyInterface = {
+  type: 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'object'
   required?: boolean
-  type?: string
-  $ref?: string
-  description?: Description
+  description?: string
 }
+
+export enum StringFormatType {
+  'date'='date',
+  'date-time'='date-time',
+  'password'='password',
+  'email'='email',
+  'uuid'='uuid',
+  'hostname'='hostname',
+  'ipv4'='ipv4',
+  'ipv6'='ipv6',
+  'uri'='uri',
+}
+
+export type StringProperty = Omit<PropertyInterface, 'type'> & {
+  type: 'string'
+  minLength?: number
+  maxLength?: number
+  format?: StringFormatType
+}
+
+export enum NumberFormatType {
+  'float'='float',
+  'double'='double',
+  'int32'='int32',
+  'int64'='int64',
+}
+
+export type NumberProperty = Omit<PropertyInterface, 'type'> & {
+  type: 'integer' | 'number'
+  minimum?: number
+  maximum?: number
+  format?: NumberFormatType
+}
+
+type ArrayTypeProperty = {
+  type: 'string' | 'number' | 'boolean' | 'integer'
+}
+
+type ArrayRefProperty = {
+  $ref: string
+}
+
+type ArrayMixedTypeProperty = {
+  oneOf: ArrayTypeProperty[] | ArrayRefProperty[]
+}
+
+export type ArrayProperty = Omit<PropertyInterface, 'type'> & {
+  type: 'array'
+  items?: ArrayTypeProperty | ArrayRefProperty | ArrayMixedTypeProperty
+}
+
+export type ObjectProperty = Omit<PropertyInterface, 'type'> & {
+  type?: 'object'
+  $ref?: string
+}
+
+export type Property = StringProperty | NumberProperty | ArrayProperty | ObjectProperty
 
 export type Parameter = {
   in?: 'query' | 'header' | 'path' | 'cookie' | 'body' | 'formData'

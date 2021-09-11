@@ -1,33 +1,44 @@
-import { addProperty } from "../definitions"
+import { addProperty, Property } from "../definitions"
 import { Target } from "../types"
+import { NumberPropertyMap } from "./properties/numberProperty"
+import { ObjectPropertyMap } from "./properties/objectProperty"
+import { StringPropertyMap } from "./properties/stringProperty"
 
-type PropertyParams = {
-  required?: boolean
-  type?: 'string' | 'integer' | 'number' | 'boolean' | 'array' | 'object'
-  $ref?: string
-  description?: string
-}
+export type PropertyParams = Property | {}
 
-export const PropType = {
-  String: "string",
-  Number: "integer",
+enum PropertyReflectType {
+  String="string",
+  Number="number",
+  Integer="integer",
+  Boolean="boolean",
+  Array="array"
 }
 
 export function OAProperty(params: PropertyParams = {}): PropertyDecorator {
   return function (target: Target, propertyName: string) {
-
-    if (typeof params.type !== 'undefined') {
-      addProperty(target.constructor.name, propertyName, params)
-      return
-    }
-
     const { name } = Reflect.getMetadata("design:type", target as Object, propertyName)
 
-    if (typeof PropType[name] !== 'undefined') {
-      addProperty(target.constructor.name, propertyName, { ...params, type: PropType[name] })
+    if (typeof params['type'] === 'undefined') {
+      params['type'] = PropertyReflectType[name] ?? 'object'
+    }
+
+    if (params['type'] === 'string') {
+      const stringProperty = new StringPropertyMap()
+      addProperty(target.constructor.name, propertyName, stringProperty.map(params))
+
       return
     }
 
-    addProperty(target.constructor.name, propertyName, { ...params, $ref: `#/components/schemas/${name}`})
+    if (params['type'] === 'number' || params['type'] === 'integer') {
+      const numberProperty = new NumberPropertyMap()
+      addProperty(target.constructor.name, propertyName, numberProperty.map(params))
+
+      return
+    }
+
+    if (params['type'] === 'object') {
+      const objectProperty = new ObjectPropertyMap(target, propertyName)
+      addProperty(target.constructor.name, propertyName, objectProperty.map(params))
+    }
   }
 }

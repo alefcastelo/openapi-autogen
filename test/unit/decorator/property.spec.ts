@@ -6,7 +6,8 @@ describe('@OAProperty', () => {
   it('Defining OperationId', () => {
 
     class AddressCreateInput {
-      @OAProperty()
+      @OAProperty({
+      })
       public street: string
 
       @OAProperty()
@@ -23,8 +24,13 @@ describe('@OAProperty', () => {
       @OAProperty()
       public email: string
 
+      @OAProperty({
+        $ref: 'AddressCreateInput'
+      })
+      public shippingAddress: unknown
+
       @OAProperty()
-      public address: AddressCreateInput
+      public billingAddress: AddressCreateInput
     }
 
     expect(getAllDefinitions().property[AddressCreateInput.name]).toEqual({
@@ -32,7 +38,7 @@ describe('@OAProperty', () => {
         type: 'string',
       },
       number: {
-        type: 'integer',
+        type: 'number',
       }
     })
 
@@ -46,7 +52,10 @@ describe('@OAProperty', () => {
       email: {
         type: 'string',
       },
-      address: {
+      shippingAddress: {
+        $ref: '#/components/schemas/AddressCreateInput',
+      },
+      billingAddress: {
         $ref: '#/components/schemas/AddressCreateInput',
       }
     })

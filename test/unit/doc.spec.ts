@@ -265,7 +265,7 @@ describe('OpenApi', () => {
                 "type": "string"
               },
               "number": {
-                "type": "integer"
+                "type": "number"
               }
             },
             "type": "object"

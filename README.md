@@ -83,7 +83,7 @@
 // Property Int
 @OAProperty({
   required: true,
-  type: 'integer', // string | number | integer | boolean | array | object
+  type: 'integer',
   description: 'Subscriber Id',
   format: 'int64',
   example: 1,
