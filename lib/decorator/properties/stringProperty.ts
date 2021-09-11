@@ -1,5 +1,4 @@
 import { StringFormatType, StringProperty } from "../../definitions"
-import { Target } from "../../types"
 
 export class StringPropertyMap {
   map(params: unknown): StringProperty {

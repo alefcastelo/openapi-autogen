@@ -24,7 +24,6 @@ export class ObjectPropertyMap {
       }
     } else {
       const { name } = Reflect.getMetadata("design:type", this.target as Object, this.propertyName)
-
       property.$ref = `#/components/schemas/${name}`
     }
 

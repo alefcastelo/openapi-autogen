@@ -3,6 +3,12 @@ import { OADescription, OAGet, OANotFoundResponse, OAOkResponse, OAOperationId, 
 describe('OpenApi', () => {
   it('Defining Doc', () => {
 
+
+    enum Status {
+      Active='active',
+      Inactive='inactive'
+    }
+
     class AddressCreateInput {
       @OAProperty()
       public street: string
@@ -20,6 +26,12 @@ describe('OpenApi', () => {
 
       @OAProperty()
       public email: string
+
+      @OAProperty({
+        type: 'enum',
+        enum: Status,
+      })
+      public status: Status
 
       @OAProperty()
       public address: AddressCreateInput
@@ -277,6 +289,13 @@ describe('OpenApi', () => {
               },
               "lastName": {
                 "type": "string"
+              },
+              status: {
+                type: "enum",
+                enum:  [
+                  "active",
+                  "inactive",
+                ]
               },
               "email": {
                 "type": "string"

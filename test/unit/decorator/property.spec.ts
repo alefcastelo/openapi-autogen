@@ -5,6 +5,11 @@ describe('@OAProperty', () => {
 
   it('Defining OperationId', () => {
 
+    enum Status {
+      Active='active',
+      Inactive='inactive'
+    }
+
     class AddressCreateInput {
       @OAProperty({
       })
@@ -23,6 +28,11 @@ describe('@OAProperty', () => {
 
       @OAProperty()
       public email: string
+
+      @OAProperty({
+        enum: Status
+      })
+      public status: Status
 
       @OAProperty({
         $ref: 'AddressCreateInput'
@@ -54,6 +64,13 @@ describe('@OAProperty', () => {
       },
       shippingAddress: {
         $ref: '#/components/schemas/AddressCreateInput',
+      },
+      status: {
+        type: "string",
+        enum:  [
+          "active",
+          "inactive",
+        ]
       },
       billingAddress: {
         $ref: '#/components/schemas/AddressCreateInput',

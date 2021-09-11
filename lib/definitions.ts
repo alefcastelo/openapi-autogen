@@ -53,6 +53,12 @@ export type StringProperty = Omit<PropertyInterface, 'type'> & {
   format?: StringFormatType
 }
 
+export type EnumProperty = Omit<PropertyInterface, 'type'> & {
+  type?: 'string' | 'number'
+  enum: unknown[]
+  useKeys?: boolean
+}
+
 export enum NumberFormatType {
   'float'='float',
   'double'='double',
@@ -89,7 +95,7 @@ export type ObjectProperty = Omit<PropertyInterface, 'type'> & {
   $ref?: string
 }
 
-export type Property = StringProperty | NumberProperty | ArrayProperty | ObjectProperty
+export type Property = StringProperty | EnumProperty | NumberProperty | ArrayProperty | ObjectProperty
 
 export type Parameter = {
   in?: 'query' | 'header' | 'path' | 'cookie' | 'body' | 'formData'

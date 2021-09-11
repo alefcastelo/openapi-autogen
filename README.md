@@ -89,6 +89,13 @@
   example: 1,
 })
 
+@OAPropertyInteger({
+  required: true,
+  description: 'Subscriber Id',
+  format: 'int64',
+  example: 1,
+})
+
 // Property Enum
 @OAProperty({
   required: true,
@@ -96,6 +103,8 @@
   enum: ['accepted', 'rejected'],
   description: 'Subscriber Status'
 })
+
+@OAPropertyEnum([ 'accepted', 'rejected' ], { required: true })
 
 // Property OneOf
 @OAProperty({
@@ -106,6 +115,13 @@
   ],
   description: 'Subscriber Id'
 })
+@OAPropertyOneOf([
+  { type: 'integer', format: 'int64', example: 1 },
+  { type: 'string', format: 'uuid', example: '123e4567-e89b-12d3-a456-426614174000' }
+], {
+  required: true,
+  description: 'Subscriber Id'
+})
 
 // Property OneOf
 @OAProperty({
@@ -114,6 +130,13 @@
     AddresCreateInput,
     AddresUpdateInput
   ]
+})
+
+@OAPropertyOneOf([
+  AddresCreateInput,
+  AddresUpdateInput
+], {
+  required: true,
 })
 
 // Property OneOf
