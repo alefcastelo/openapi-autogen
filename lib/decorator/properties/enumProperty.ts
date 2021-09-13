@@ -20,8 +20,6 @@ const enumToArray = (enumeration, useKeys: boolean): unknown[] => {
 
 export class EnumPropertyMap {
   map(params: unknown): EnumProperty {
-    const violations = {}
-
     const enumValues = enumToArray(params['enum'], params['useKeys'])
 
     const property: EnumProperty = { type: params['type'], enum:  enumValues}

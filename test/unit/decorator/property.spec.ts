@@ -11,8 +11,7 @@ describe('@OAProperty', () => {
     }
 
     class AddressCreateInput {
-      @OAProperty({
-      })
+      @OAProperty()
       public street: string
 
       @OAProperty()

@@ -1,5 +1,6 @@
 import { addProperty, Property } from "../definitions"
 import { Target } from "../types"
+import { ArrayPropertyMap } from "./properties/arrayProperty"
 import { EnumPropertyMap } from "./properties/enumProperty"
 import { NumberPropertyMap } from "./properties/numberProperty"
 import { ObjectPropertyMap } from "./properties/objectProperty"
@@ -33,6 +34,13 @@ export function OAProperty(params: PropertyParams = {}): PropertyDecorator {
     if (params['type'] === 'string') {
       const stringProperty = new StringPropertyMap()
       addProperty(target.constructor.name, propertyName, stringProperty.map(params))
+
+      return
+    }
+
+    if (params['type'] === 'array') {
+      const arrayProperty = new ArrayPropertyMap()
+      addProperty(target.constructor.name, propertyName, arrayProperty.map(params))
 
       return
     }
