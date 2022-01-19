@@ -1,4 +1,22 @@
 {
+  "name": "openapi-autogen",
+  "description": "An OpenAPI generator",
+  "version": "0.0.1",
+  "author": "Alef Castelo <alefaraujocastelo@gmail.com>",
+  "license": "MIT",
+  "repository": "alefcastelo/openapi-autogen",
+  "keywords": [
+    "openapi",
+    "framework",
+    "swagger",
+    "web",
+    "http",
+    "rest",
+    "restful",
+    "router",
+    "app",
+    "api"
+  ],
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/lodash": "^4.14.172",
