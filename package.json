@@ -3,8 +3,10 @@
   "description": "An OpenAPI generator",
   "version": "0.0.1",
   "author": "Alef Castelo <alefaraujocastelo@gmail.com>",
-  "license": "MIT",
-  "repository": "alefcastelo/openapi-autogen",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alefcastelo/openapi-autogen.git"
+  },
   "keywords": [
     "openapi",
     "framework",
@@ -32,12 +34,22 @@
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "test": "jest --config=./test/jest.config.ts"
   },
   "dependencies": {
     "lodash": "^4.17.21"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/alefcastelo/openapi-autogen/issues"
+  },
+  "homepage": "https://github.com/alefcastelo/openapi-autogen#readme",
+  "main": "./lib/openapi.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "license": "MIT"
 }
