@@ -34,17 +34,7 @@ type PropertyInterface = {
   description?: string
 }
 
-export enum StringFormatType {
-  'date'='date',
-  'date-time'='date-time',
-  'password'='password',
-  'email'='email',
-  'uuid'='uuid',
-  'hostname'='hostname',
-  'ipv4'='ipv4',
-  'ipv6'='ipv6',
-  'uri'='uri',
-}
+export type StringFormatType = 'date-time' | 'date' | 'time' | 'uuid' | 'email' | 'hostname' | 'ipv4' | 'ipv6' | 'uri'
 
 export type StringProperty = Omit<PropertyInterface, 'type'> & {
   type: 'string'

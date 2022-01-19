@@ -28,6 +28,9 @@ describe('@OAProperty', () => {
       @OAProperty()
       public email: string
 
+      @OAProperty()
+      public createdAt: Date
+
       @OAProperty({
         enum: Status
       })
@@ -60,6 +63,10 @@ describe('@OAProperty', () => {
       },
       email: {
         type: 'string',
+      },
+      createdAt:{
+        type: "string",
+        format: "date",
       },
       shippingAddress: {
         $ref: '#/components/schemas/AddressCreateInput',

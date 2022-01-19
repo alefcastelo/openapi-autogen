@@ -5,11 +5,13 @@ import { EnumPropertyMap } from "./properties/enumProperty"
 import { NumberPropertyMap } from "./properties/numberProperty"
 import { ObjectPropertyMap } from "./properties/objectProperty"
 import { StringPropertyMap } from "./properties/stringProperty"
+import { DatePropertyMap } from "./properties/dateProperty"
 
 export type PropertyParams = Property | {}
 
 enum PropertyReflectType {
   String="string",
+  Date="date",
   Number="number",
   Integer="integer",
   Boolean="boolean",
@@ -34,6 +36,13 @@ export function OAProperty(params: PropertyParams = {}): PropertyDecorator {
     if (params['type'] === 'string') {
       const stringProperty = new StringPropertyMap()
       addProperty(target.constructor.name, propertyName, stringProperty.map(params))
+
+      return
+    }
+
+    if (params['type'] === 'date') {
+      const dateProperty = new DatePropertyMap()
+      addProperty(target.constructor.name, propertyName, dateProperty.map(params))
 
       return
     }
