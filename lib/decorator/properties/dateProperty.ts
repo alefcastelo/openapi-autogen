@@ -1,4 +1,4 @@
-import { StringFormatType, StringProperty } from "../../definitions"
+import { StringProperty } from "../../definitions"
 
 export class DatePropertyMap {
   map(params: unknown): StringProperty {
